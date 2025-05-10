@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../apis/config";
+import { axiosMovies } from "../apis/config";
 import { MoviesCard } from "../components/moviesCard";
 export const MoviesList = () => {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
-    axiosInstance
+    axiosMovies
       .get("/now_playing?api_key=0c79feb73f97e97228ca7e3a87f0ffcc")
       .then((res) => setMovies(res.data.results));
   }, []);
