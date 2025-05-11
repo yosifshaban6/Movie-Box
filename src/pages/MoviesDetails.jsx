@@ -1,7 +1,8 @@
 import React, { useState, useEffect, use } from "react";
-import { axiosInstance } from "../apis/config";
+import { axiosInstance } from "../services/config";
 import { useParams } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Recommendation } from "../components/Recommendation";
 
 export default function MoviesDetails() {
   const [movie, setMovie] = useState();
@@ -129,6 +130,7 @@ export default function MoviesDetails() {
             </div>
           </div>
         </div>
+              <Recommendation movieId={id} />
       </div>
     </>
   );

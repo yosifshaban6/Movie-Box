@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../apis/config";
+import { axiosInstance } from "../services/config";
 import { MoviesCard } from "../components/moviesCard";
 export const MoviesList = () => {
   const [movies, setMovies] = useState([]);
