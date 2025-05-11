@@ -1,6 +1,6 @@
 import React, { useState, useEffect, use } from "react";
 import { axiosInstance } from "../apis/config";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function MoviesDetails() {
@@ -44,7 +44,7 @@ export default function MoviesDetails() {
                   month: "long",})}
               </span>
               <p>
-                Rating: {"⭐".repeat(Math.round(movie?.vote_average))} (
+                Rating: {"⭐".repeat(Math.round(movie?.vote_average)/2)} (
                 {movie?.vote_average.toFixed(1)}).
               </p>
               <p
