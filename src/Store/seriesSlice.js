@@ -33,10 +33,6 @@ export const seriesSlice = createSlice({
       const id = action.payload;
       state.favorites = state.favorites.filter((favId) => favId !== id);
     },
-    RemoveFromWatching: (state, action) => {
-      const id = action.payload;
-      state.watching = state.watching.filter((watchId) => watchId !== id);
-    },
   },
 });
 
@@ -45,7 +41,6 @@ export const {
   ToggleFavorite,
   ToggleWatching,
   RemoveFromFavorites,
-  RemoveFromWatching,
 } = seriesSlice.actions;
 
 export default seriesSlice.reducer;

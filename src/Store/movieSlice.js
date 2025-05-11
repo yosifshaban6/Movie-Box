@@ -29,6 +29,10 @@ export const movieSlice = createSlice({
         state.watching.push(movieId);
       }
     },
+    RemoveFromFavorites: (state, action) => {
+      const movieId = action.payload;
+      state.favorites = state.favorites.filter((id) => id !== movieId);
+    },
   },
 });
 
@@ -37,7 +41,6 @@ export const {
   ToggleFavorite,
   ToggleWatching,
   RemoveFromFavorites,
-  RemoveFromWatching,
 } = movieSlice.actions;
 
 export default movieSlice.reducer;
