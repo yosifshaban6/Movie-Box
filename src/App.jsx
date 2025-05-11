@@ -1,19 +1,15 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'
-import { MoviesList } from './pages/moviesList';
-import { BrowserRouter } from 'react-router';
-import RoutesList from './routes/routesList';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "./App.css";
+import { BrowserRouter } from "react-router";
+import { RoutesList } from "./routes/routesList";
 
 function App() {
-  
   return (
-    // <>
-    //   <MoviesList></MoviesList>
-    // </>
     <BrowserRouter>
-    <RoutesList></RoutesList>
+      <RoutesList></RoutesList>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

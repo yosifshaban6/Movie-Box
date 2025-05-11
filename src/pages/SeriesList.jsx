@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { axiosSeries ,apiKey} from "../apis/config";
 import { SeriesCard } from "../components/SeriesCard";
+import axios from "axios";
 export const SeriesList = () => {
   const [Series, setSeries] = useState([]);
   useEffect(() => {
-    axiosSeries
-      .get(`popular?api_key=${apiKey}`)
+    axios
+      .get(`https://api.themoviedb.org/3/tv/popular?api_key=0c79feb73f97e97228ca7e3a87f0ffcc`)
       .then((res) => setSeries(res.data.results));
   }, []);
   return (
@@ -26,4 +26,3 @@ export const SeriesList = () => {
     </>
   );
 };
-

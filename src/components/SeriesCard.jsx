@@ -18,7 +18,7 @@ export const SeriesCard = (props) => {
         src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
       />
       <Card.Body className="d-flex flex-column justify-content-between">
-        <Card.Title>{show.title}</Card.Title>
+        <Card.Title>{show.name}</Card.Title>
         <Card.Text></Card.Text>
         <div className="container">
           <Button

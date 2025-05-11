@@ -2,17 +2,22 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export const MoviesCard = (props) => {
   const { movie } = props;
   const [isFavorited, setIsFavorited] = useState(false);
+  const navigate = useNavigate();
+  const handleCardClick = (id) => {
+    navigate(`/MoviesDetails/${movie.id}`);
+  };
 
   const handleFavoriteClick = () => {
     setIsFavorited(!isFavorited);
   };
 
   return (
-    <Card className="h-100 flex-column d-flex carditem" >
+    <Card className="h-100 flex-column d-flex">
       <Card.Img
         variant="top"
         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
@@ -22,6 +27,7 @@ export const MoviesCard = (props) => {
         <Card.Text></Card.Text>
         <div className="container">
           <Button
+            onClick={() => handleCardClick(movie.id)}
             className="btn-sm px-3 py-1 rounded-4 shadow-sm fw-bold text-uppercase border-0"
             style={{
               background: "linear-gradient(135deg, #007bff, #0056b3)",
@@ -36,15 +42,14 @@ export const MoviesCard = (props) => {
             Watch
           </Button>
           <FaHeart
-              className="ms-4 heart-icon "
-              onClick={handleFavoriteClick}
-              style={{
-                marginRight: "5px",
-                color: isFavorited ? "green" : "black",
-                transition: "color 0.3s, border-color 0.3s",
-              }}
-            />
-
+            className="ms-4 heart-icon "
+            onClick={handleFavoriteClick}
+            style={{
+              marginRight: "5px",
+              color: isFavorited ? "green" : "black",
+              transition: "color 0.3s, border-color 0.3s",
+            }}
+          />
         </div>
       </Card.Body>
     </Card>
