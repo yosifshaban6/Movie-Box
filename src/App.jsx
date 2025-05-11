@@ -10,6 +10,13 @@ function App() {
     <RoutesList></RoutesList>
     </BrowserRouter>
   )
+  
+  return (
+    <BrowserRouter>
+    <RoutesList></RoutesList>
+    </BrowserRouter>
+  )
 }
 
+export default App
 export default App
