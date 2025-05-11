@@ -3,6 +3,7 @@ import { MoviesList } from "../pages/moviesList";
 import Favorites from "../pages/Favorites";
 import Watched from "../pages/Watched";
 import Watching from "../pages/Watching";
+import { SeriesList } from "../pages/SeriesList";
 
 
 
@@ -13,6 +14,7 @@ export default function RoutesList() {
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/watched" element={<Watched />} />
       <Route path="/watching" element={<Watching />} />
+      <Route path="/s" element={<SeriesList />}></Route>
     </Routes>
   );
 }
