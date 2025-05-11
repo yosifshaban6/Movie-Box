@@ -1,0 +1,11 @@
+.heart-icon:hover {
+    color: green; 
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+ 
+  .heart-icon:active {
+    color: green;
+    
+  }
