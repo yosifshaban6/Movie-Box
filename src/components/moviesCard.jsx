@@ -1,22 +1,34 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ToggleFavorite, ToggleWatching, RemoveFromFavorites } from "../Store/movieSlice";
 
 export const MoviesCard = (props) => {
-  const { movie } = props;
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { movie, page } = props;
+  const dispatch = useDispatch();
+
+  const favorites = useSelector((state) => state.movieData.favorites);
+  const watching = useSelector((state) => state.movieData.watching);
+
+  const isFavorited = favorites.includes(movie.id);
+  const isWatching = watching.includes(movie.id);
 
   const handleFavoriteClick = () => {
-    setIsFavorited(!isFavorited);
+    dispatch(ToggleFavorite(movie.id));
+  };
+
+  const handleWatchClick = () => {
+    dispatch(ToggleWatching(movie.id)); 
+  };
+
+  const handleDeleteFavorite = () => {
+    dispatch(RemoveFromFavorites(movie.id));
   };
 
   return (
-    <Card className="h-100 flex-column d-flex carditem" >
-      <Card.Img
-        variant="top"
-        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-      />
+    <Card className="h-100 flex-column d-flex carditem">
+      <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
       <Card.Body className="d-flex flex-column justify-content-between">
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text></Card.Text>
@@ -28,23 +40,32 @@ export const MoviesCard = (props) => {
               color: "#fff",
               transition: "transform 0.2s ease-in-out",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            onClick={handleWatchClick}
           >
-            Watch
+            {isWatching ? "Watching..." : "Watch"}
           </Button>
-          <FaHeart
-              className="ms-4 heart-icon "
-              onClick={handleFavoriteClick}
-              style={{
-                marginRight: "5px",
-                color: isFavorited ? "green" : "black",
-                transition: "color 0.3s, border-color 0.3s",
-              }}
-            />
 
+          <FaHeart
+            className="ms-4 heart-icon"
+            onClick={handleFavoriteClick}
+            style={{
+              marginRight: "5px",
+              color: isFavorited ? "green" : "black",
+              transition: "color 0.3s, border-color 0.3s",
+              cursor: "pointer",
+            }}
+          />
+
+          {page === "favorites" && (
+            <Button
+              className="btn-danger btn-sm ms-2"
+              onClick={handleDeleteFavorite}
+            >
+              Remove from Favorites
+            </Button>
+          )}
         </div>
       </Card.Body>
     </Card>
