@@ -1,13 +1,15 @@
 import { Routes, Route } from "react-router";
 import { MoviesList } from "../pages/moviesList";
 import { MoviesSearch } from "../pages/moviesSearch"; // Make sure it's imported
+import  MoviesDetails  from "../pages/MoviesDetails";
 
 export default function RoutesList() {
   return (
     <Routes>
       <Route path="/" element={<MoviesList />} />
       <Route path="/search/:query" element={<MoviesSearch />} />
-      <Route path="/search/" element={<MoviesSearch />} /> 
+      <Route path="/MoviesDetails/:id" element={<MoviesDetails />}></Route>
+      <Route path="/search/" element={<MoviesSearch />} />
     </Routes>
   );
 }

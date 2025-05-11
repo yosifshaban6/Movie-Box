@@ -1,21 +1,24 @@
 import React, { useState, useEffect, use } from "react";
-import { axiosInstance } from "../services/config";
 import { useParams } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Recommendation } from "../components/Recommendation";
+import axios from "axios";
 
 export default function MoviesDetails() {
   const [movie, setMovie] = useState();
   const { id } = useParams();
 
   useEffect(() => {
-    axiosInstance
-      .get(`/${id}?api_key=0c79feb73f97e97228ca7e3a87f0ffcc`)
+    axios
+      .get(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=0c79feb73f97e97228ca7e3a87f0ffcc`,
+      )
       .then((res) => {
         setMovie(res.data);
       })
       .catch((err) => console.log(err));
   });
+
   return (
     <>
       <div className="container-md p-2 ">
@@ -42,10 +45,11 @@ export default function MoviesDetails() {
               <span style={{ fontSize: "12px", color: "#858585" }}>
                 {new Date(movie?.release_date).toLocaleDateString("en-US", {
                   year: "numeric",
-                  month: "long",})}
+                  month: "long",
+                })}
               </span>
               <p>
-                Rating: {"⭐".repeat(Math.round(movie?.vote_average)/2)} (
+                Rating: {"⭐".repeat(Math.round(movie?.vote_average) / 2)} (
                 {movie?.vote_average.toFixed(1)}).
               </p>
               <p
@@ -130,7 +134,7 @@ export default function MoviesDetails() {
             </div>
           </div>
         </div>
-              <Recommendation movieId={id} />
+        <Recommendation movieId={id} />
       </div>
     </>
   );

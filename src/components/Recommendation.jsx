@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../services/config";
 import { MoviesCard } from "./moviesCard";
+import axios from "axios";
 
 export const Recommendation = ({ movieId }) => {
   const [recommendations, setRecommendations] = useState([]);
@@ -8,9 +8,9 @@ export const Recommendation = ({ movieId }) => {
   useEffect(() => {
     if (!movieId) return;
 
-    axiosInstance
+    axios
       .get(
-        `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=0c79feb73f97e97228ca7e3a87f0ffcc`
+        `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=0c79feb73f97e97228ca7e3a87f0ffcc`,
       )
       .then((res) => setRecommendations(res.data.results || []))
       .catch((err) => {
