@@ -1,18 +1,33 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ToggleFavorite, ToggleWatching, RemoveFromFavorites } from "../Store/seriesSlice";
 
 export const SeriesCard = (props) => {
-  const { show } = props;
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { show, page } = props;
+  const dispatch = useDispatch();
+
+  const favorites = useSelector((state) => state.seriesData?.favorites || []);
+  const watching = useSelector((state) => state.seriesData.watching);
+
+  const isFavorited = favorites.includes(show.id);
+  const isWatching = watching.includes(show.id);
 
   const handleFavoriteClick = () => {
-    setIsFavorited(!isFavorited);
+    dispatch(ToggleFavorite(show.id));
+  };
+
+  const handleWatchClick = () => {
+    dispatch(ToggleWatching(show.id)); 
+  };
+
+  const handleDeleteFavorite = () => {
+    dispatch(RemoveFromFavorites(show.id));
   };
 
   return (
-    <Card className="h-100 flex-column d-flex carditem" >
+    <Card className="h-100 flex-column d-flex carditem">
       <Card.Img
         variant="top"
         src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
@@ -28,23 +43,32 @@ export const SeriesCard = (props) => {
               color: "#fff",
               transition: "transform 0.2s ease-in-out",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            onClick={handleWatchClick}
           >
-            Watch
+            {isWatching ? "Watching..." : "Watch"}
           </Button>
-          <FaHeart
-              className="ms-4 heart-icon "
-              onClick={handleFavoriteClick}
-              style={{
-                marginRight: "5px",
-                color: isFavorited ? "green" : "black",
-                transition: "color 0.3s, border-color 0.3s",
-              }}
-            />
 
+          <FaHeart
+            className="ms-4 heart-icon"
+            onClick={handleFavoriteClick}
+            style={{
+              marginRight: "5px",
+              color: isFavorited ? "green" : "black",
+              transition: "color 0.3s, border-color 0.3s",
+              cursor: "pointer",
+            }}
+          />
+
+          {page === "favorites" && (
+            <Button
+              className="btn-danger btn-sm ms-2"
+              onClick={handleDeleteFavorite}
+            >
+              Remove from Favorites
+            </Button>
+          )}
         </div>
       </Card.Body>
     </Card>

@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import React from 'react';
 import { MoviesList } from "../pages/moviesList";
 import Favorites from "../pages/Favorites";
-import Watched from "../pages/Watched";
 import Watching from "../pages/Watching";
 import { SeriesList } from "../pages/SeriesList";
 
@@ -12,9 +12,8 @@ export default function RoutesList() {
     <Routes>
       <Route path="/" element={<MoviesList />} />
       <Route path="/favorites" element={<Favorites />} />
-      <Route path="/watched" element={<Watched />} />
       <Route path="/watching" element={<Watching />} />
-      <Route path="/s" element={<SeriesList />}></Route>
+      <Route path="/series" element={<SeriesList />}/>
     </Routes>
   );
 }

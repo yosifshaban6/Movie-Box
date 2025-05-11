@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
-import { axiosSeries ,apiKey} from "../apis/config";
+import { axiosSeries, apiKey } from "../apis/config";
 import { SeriesCard } from "../components/SeriesCard";
+import { useDispatch } from "react-redux";
+import { SetBannerData } from "../Store/seriesSlice";
+
 export const SeriesList = () => {
   const [Series, setSeries] = useState([]);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     axiosSeries
       .get(`popular?api_key=${apiKey}`)
-      .then((res) => setSeries(res.data.results));
+      .then((res) => {
+        setSeries(res.data.results)
+        dispatch(SetBannerData(res.data.results));
+      });
   }, []);
+
   return (
     <>
       <div className="container">
