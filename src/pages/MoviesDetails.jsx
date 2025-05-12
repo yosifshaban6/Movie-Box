@@ -1,7 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import { useParams } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Recommendation } from "../components/Recommendation";
+import { Recommendations } from "../components/Recommendations";
 import axios from "axios";
 
 export const MoviesDetails = () => {
@@ -134,7 +134,7 @@ export const MoviesDetails = () => {
             </div>
           </div>
         </div>
-        <Recommendation movieId={id} />
+        <Recommendations movieId={id} />
       </div>
     </>
   );

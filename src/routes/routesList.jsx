@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
-import { MoviesList } from "../pages/moviesList";
-import { MoviesSearch } from "../pages/moviesSearch"; // Make sure it's imported
+import { MoviesList } from "../pages/MoviesList";
+import { MoviesSearch } from "../pages/MoviesSearch"; // Make sure it's imported
 import { MoviesDetails } from "../pages/MoviesDetails";
 import { SeriesList } from "../pages/SeriesList";
 

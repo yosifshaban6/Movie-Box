@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router"; 
-import { MoviesCard } from "../components/moviesCard";
+import { useParams, useNavigate } from "react-router";
+import { MovieCard } from "../components/MovieCard";
 import axios from "axios";
 
 export const MoviesSearch = () => {
@@ -14,9 +14,13 @@ export const MoviesSearch = () => {
       setMovies([]);
       return;
     }
+
     axios
-      .get(`https://api.themoviedb.org/3/search/movie?api_key=0c79feb73f97e97228ca7e3a87f0ffcc&query=${query}`)
+      .get(
+        `https://api.themoviedb.org/3/search/movie?api_key=0c79feb73f97e97228ca7e3a87f0ffcc&query=${query}&include_adult=false`,
+      )
       .then((res) => {
+        console.log(res.data.results);
         setMovies(res.data.results || []);
       })
       .catch((error) => {
@@ -38,7 +42,7 @@ export const MoviesSearch = () => {
 
   const handleCloseSearch = () => {
     setSearchText("");
-    navigate("/"); 
+    navigate("/");
   };
 
   return (
@@ -51,11 +55,8 @@ export const MoviesSearch = () => {
           value={searchText}
           onChange={handleChange}
         />
-        <button
-          className="btn btn-danger ms-2"
-          onClick={handleCloseSearch}
-        >
-          X 
+        <button className="btn btn-danger ms-2" onClick={handleCloseSearch}>
+          X
         </button>
       </div>
 
@@ -67,13 +68,7 @@ export const MoviesSearch = () => {
 
       <div className="row g-4 mt-3">
         {movies.length > 0 ? (
-          movies.map((movie) => (
-            <div className="col-lg-2 d-flex" key={movie.id}>
-              <div className="w-100 h-100">
-                <MoviesCard movie={movie} />
-              </div>
-            </div>
-          ))
+          movies.map((movie) => <MovieCard movie={movie} />)
         ) : (
           <p>No results found.</p>
         )}
