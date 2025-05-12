@@ -5,7 +5,7 @@ import { SetBannerData } from "../Store/movieSlice";
 import { MoviesCard } from "../components/moviesCard";
 import axios from "axios";
 import React from 'react';
-
+import './moviesList.css'
 
 export const MoviesList = () => {
   const [movies, setMovies] = useState([]);
@@ -43,15 +43,40 @@ export const MoviesList = () => {
   };
 
   return (
-    <div className="container py-3">
-      <input
-        type="text"
-        className="form-control mb-4"
-        placeholder="Search movies..."
-        value={searchText}
-        onChange={handleChange}
-        onFocus={handleFocus}
-      />
+    <div className="container-fluid py-3" >
+      {/* Welcome Section */}
+      <div className="welcome-section p-4 mb-4" style={{ borderRadius: "8px" , background : "#e4e0e0" }}>
+        <h1>Welcome to Our Movie App</h1>
+        <p>Browse and search through a variety of movies from the latest releases to the classic hits!</p>
+
+        {/* Search Input and Button */}
+        <div className="d-flex justify-content-center align-items-center mt-3 w-100">
+          <input
+            type="text"
+            className="form-control me-2"
+            placeholder="Search movies..."
+            value={searchText}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            style={{ flexGrow: 1, marginRight: "10px" }} // Allow input to take full width
+          />
+          <button
+            onClick={() => navigate(`/search/${searchText.trim()}`)}
+            className="btn btn-warning text-white"
+            style={{
+              borderRadius: "5px",
+              fontWeight: "bold",
+              width: "auto", // Let button width be content-based
+              flexShrink: 0, // Prevent shrinking
+            }}
+          >
+            Search
+          </button>
+        </div>
+
+      </div>
+
+      {/* Movies List */}
       <div className="row g-4">
         {movies.map((movie) => (
           <div className="col-lg-2 d-flex" key={movie.id}>

@@ -4,6 +4,7 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React from 'react';
+import './moviesCard.css'
 
 import {
   ToggleFavorite,
@@ -41,59 +42,91 @@ export const MoviesCard = (props) => {
     navigate(`/MoviesDetails/${movie.id}`);
   };
 
+  const getRatingColor = (rating) => {
+    if (rating >= 8) return "#1db954"; // green
+    if (rating >= 7) return "#f5c518"; // yellow-orange
+    return "#e50914"; // red
+  };
+
   return (
     <Card
-      className="h-100 flex-column d-flex carditem"
+      className="movie-card border-0 shadow-sm"
       onClick={handleCardClick}
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: "pointer",
+        borderRadius: "10px",
+        overflow: "hidden",
+        position: "relative",
+      }}
     >
+      {/* Three Dots Menu Icon */}
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 1,
+          backgroundColor: "#ffffffcc",
+          borderRadius: "50%",
+          width: "24px",
+          height: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: "bold",
+        }}
+      >
+        ...
+      </div>
+
+      {/* Poster Image */}
       <Card.Img
         variant="top"
         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+        style={{ borderRadius: "10px", height: "300px", objectFit: "cover" }}
       />
-      <Card.Body className="d-flex flex-column justify-content-between">
-        <Card.Title>{movie.title}</Card.Title>
 
-        <div className="container">
-          <Button
-            className="btn-sm px-3 py-1 rounded-4 shadow-sm fw-bold text-uppercase border-0"
-            style={{
-              background: "linear-gradient(135deg, #007bff, #0056b3)",
-              color: "#fff",
-              transition: "transform 0.2s ease-in-out",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.transform = "scale(1)")
-            }
-            onClick={handleWatchClick}
-          >
-            {isWatching ? "Watching..." : "Watch"}
-          </Button>
+      {/* Circular Rating */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "60px",
+          left: "10px",
+          backgroundColor: "rgb(0,0,0,.85)",
+          color : "#fff",
+          fontWeight: "bold",
+          padding: "5px 10px",
+          borderRadius: "50%",
+          fontSize: "14px",
+          border: `2px solid ${getRatingColor(Math.round(movie.vote_average))}`,
+          boxShadow: "0 0 6px rgba(0,0,0,0.2)",
+        }}
+      >
+        {movie.vote_average ? Math.round(movie.vote_average) : "NR"}
+      </div>
 
+
+      {/* Card Body */}
+      <Card.Body className="p-2">
+        <Card.Title className="mb-1" style={{ fontSize: "16px" }}>
+          {movie.title}
+        </Card.Title>
+        <div
+          className="d-flex align-items-center justify-content-between"
+          style={{ fontSize: "13px", color: "#555" }}
+        >
+          <span>{movie.release_date}</span>
           <FaHeart
-            className="ms-4 heart-icon"
             onClick={handleFavoriteClick}
             style={{
-              marginRight: "5px",
-              color: isFavorited ? "green" : "black",
-              transition: "color 0.3s, border-color 0.3s",
+              color: isFavorited ? "gold" : "#ccc",
               cursor: "pointer",
+              transition: "color 0.3s",
             }}
           />
-
-          {page === "favorites" && (
-            <Button
-              className="btn-danger btn-sm ms-2"
-              onClick={handleDeleteFavorite}
-            >
-              Remove from Favorites
-            </Button>
-          )}
         </div>
       </Card.Body>
     </Card>
+
   );
 };

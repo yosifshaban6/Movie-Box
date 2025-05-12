@@ -91,7 +91,7 @@ export default function MoviesDetails() {
                 className="btn btn-sm rounded-pill"
                 onClick={handleWatchClick}
                 style={{
-                  backgroundColor: isWatching ? "#FFE353" : "#fff",
+                  backgroundColor: isWatching ? "#FFE353" : "#FFE353",
                   fontWeight: "bold",
                   fontSize: "1rem",
                   color: "#000000",
@@ -104,7 +104,7 @@ export default function MoviesDetails() {
                 onClick={handleFavoriteClick}
                 style={{
                   cursor: "pointer",
-                  color: isFavorited ? "green" : "#999",
+                  color: isFavorited ? "red" : "#999",
                   fontSize: "1.7rem",
                   transition: "color 0.3s",
                 }}
