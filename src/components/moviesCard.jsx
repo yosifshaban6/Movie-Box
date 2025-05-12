@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToggleFavorite, ToggleWatching, RemoveFromFavorites } from "../Store/movieSlice";
 
@@ -13,17 +14,20 @@ export const MoviesCard = (props) => {
 
   const isFavorited = favorites.includes(movie.id);
   const isWatching = watching.includes(movie.id);
-
+  const navigate = useNavigate();
   const handleFavoriteClick = () => {
     dispatch(ToggleFavorite(movie.id));
   };
 
   const handleWatchClick = () => {
-    dispatch(ToggleWatching(movie.id)); 
+    dispatch(ToggleWatching(movie.id));
   };
 
   const handleDeleteFavorite = () => {
     dispatch(RemoveFromFavorites(movie.id));
+  };
+  const handleCardClick = (id) => {
+    navigate(`/MoviesDetails/${movie.id}`);
   };
 
   return (
@@ -33,6 +37,18 @@ export const MoviesCard = (props) => {
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text></Card.Text>
         <div className="container">
+          <Button
+            onClick={() => handleCardClick(movie.id)}
+            className="btn-sm px-3 py-1 rounded-4 shadow-sm fw-bold text-uppercase border-0"
+            style={{
+              background: "linear-gradient(135deg, #007bff, #0056b3)",
+              color: "#fff",
+              transition: "transform 0.2s ease-in-out",
+            }}
+          >
+            Details
+          </Button>
+
           <Button
             className="btn-sm px-3 py-1 rounded-4 shadow-sm fw-bold text-uppercase border-0"
             style={{
@@ -57,7 +73,6 @@ export const MoviesCard = (props) => {
               cursor: "pointer",
             }}
           />
-
           {page === "favorites" && (
             <Button
               className="btn-danger btn-sm ms-2"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { axiosMovies } from "../apis/config";
+import { axiosInstance } from "../apis/config";
 import { MoviesCard } from "../components/moviesCard";
 import { useDispatch } from "react-redux";
 import { SetBannerData } from "../Store/movieSlice";
@@ -9,13 +9,22 @@ export const MoviesList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axiosMovies
+    axiosInstance   
       .get("/now_playing?api_key=0c79feb73f97e97228ca7e3a87f0ffcc")
       .then((res) => {
-        setMovies(res.data.results);
-        dispatch(SetBannerData(res.data.results));
+        if (res?.data?.results?.length) {
+          setMovies(res.data.results);
+          dispatch(SetBannerData(res.data.results));
+        } else {
+          setMovies([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
+        setMovies([]);
       });
   }, []);
+
 
   return (
     <div className="container">

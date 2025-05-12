@@ -6,5 +6,6 @@ export const store = configureStore({
   reducer: {
     movieData : movieReducer,
     seriesData: seriesReducer,
+    movie: movieReducer,
   },
 })

@@ -7,13 +7,5 @@
  
   .heart-icon:active {
     color: green;
-  }
-  .carditem{
-    transition: all .3s .1s ease-in;
-  }
-  .carditem:hover{
-    transform: scale(1.06);
-    box-shadow: 2px 2px 31px -6px rgba(0,0,0,0.72);;
-
-
+    
   }
