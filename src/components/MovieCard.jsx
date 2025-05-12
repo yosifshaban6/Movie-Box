@@ -70,39 +70,41 @@ export const MovieCard = (props) => {
             })}
           />
         </div>
-        <Card.Body className="p-0 mt-3 d-flex flex-column justify-content-between">
+        <Button
+          variant="none"
+          className="border-0 position-absolute p-0"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleFavoriteClick();
+          }}
+          style={{
+            top: "10px",
+            right: "10px",
+          }}
+        >
+          <RiHeart3Fill
+            style={{
+              color: isFavorited ? "rgb(233, 54, 22)" : "rgba(158, 158, 158, 0.822)",
+              fontSize: "25px",
+            }}
+          />
+        </Button>
+        <Card.Body className="p-0 mt-3">
           <Card.Title className=" fw-bolder fs-6 mb-1">
             {movie.title}
           </Card.Title>
-          <div className="d-flex justify-content-between pe-2 align-items-end">
-            <Card.Text
-              className="m-0"
-              style={{
-                fontSize: "12px",
-              }}
-            >
-              {new Date(movie.release_date).toLocaleDateString("en-US", {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-              })}
-            </Card.Text>
-            <Button
-              variant="none"
-              className="border-0 p-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleFavoriteClick();
-              }}
-            >
-              <RiHeart3Fill
-                style={{
-                  color: isFavorited ? "rgb(229, 233, 22)" : "gray",
-                  fontSize: "25px",
-                }}
-              />
-            </Button>
-          </div>
+          <Card.Text
+            className="m-0"
+            style={{
+              fontSize: "12px",
+            }}
+          >
+            {new Date(movie.release_date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })}
+          </Card.Text>
         </Card.Body>
       </Card>
     )
