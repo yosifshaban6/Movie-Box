@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
+import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ToggleFavorite, ToggleWatching, RemoveFromFavorites } from "../Store/seriesSlice";
 

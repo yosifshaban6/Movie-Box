@@ -3,6 +3,8 @@ import { axiosSeries, apiKey } from "../apis/config";
 import { SeriesCard } from "../components/SeriesCard";
 import { useDispatch } from "react-redux";
 import { SetBannerData } from "../Store/seriesSlice";
+import React from 'react';
+
 
 export const SeriesList = () => {
   const [Series, setSeries] = useState([]);

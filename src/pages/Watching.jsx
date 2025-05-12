@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import { MoviesCard } from '../components/moviesCard';
 import { SeriesCard } from '../components/SeriesCard';
+import React from 'react';
+
 
 const Watching = () => {
     const watching = useSelector(state => state.movieData.watching || []);
