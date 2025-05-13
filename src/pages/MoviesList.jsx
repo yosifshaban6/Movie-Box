@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SetBannerData } from "../Store/movieSlice";
-import { MoviesCard } from "../components/moviesCard";
+import { MoviesCard } from "../components/MovieCard";
 import axios from "axios";
 import React from "react";
-import "./moviesList.css";
+import "./MoviesList.css";
 
 export const MoviesList = () => {
   const [movies, setMovies] = useState([]);
@@ -51,7 +51,7 @@ export const MoviesList = () => {
         className="welcome-section p-4 mb-4"
         style={{ borderRadius: "8px", background: "#e4e0e0" }}
       >
-        <h1 className="mt-4">Welcome to Our Movie App</h1>
+        <h1 className="mt-4">Welcome to Our Movie Box</h1>
         <p>
           Browse and search through a variety of movies from the latest releases
           to the classic hits!

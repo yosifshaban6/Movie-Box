@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { MoviesCard } from '../components/moviesCard';
+import { MoviesCard } from '../components/MovieCard';
 import { SeriesCard } from '../components/SeriesCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';  // useNavigate for React Router v6

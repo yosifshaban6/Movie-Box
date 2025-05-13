@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { axiosSeries, apiKey } from "../apis/config";
+import { axiosSeries, apiKey } from "../services/config";
 import { SeriesCard } from "../components/SeriesCard";
 import { useDispatch } from "react-redux";
 import { SetBannerData } from "../Store/seriesSlice";
@@ -49,7 +49,7 @@ export const SeriesList = () => {
           className="welcome-section p-4 mb-4"
           style={{ borderRadius: "8px", background: "#e4e0e0" }}
         >
-          <h1 className="mt-4">Welcome to Our Movie App</h1>
+          <h1 className="mt-4">Welcome to Our Movie Box</h1>
           <p>
             Browse and search through a variety of movies from the latest
             releases to the classic hits!

@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RiHeart3Fill } from "react-icons/ri";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import React from "react";
-import "./moviesCard.css";
+import "./MovieCard.css";
 
 import {
   ToggleFavorite,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { MoviesCard } from "../components/moviesCard";
+import { MoviesCard } from "../components/MovieCard";
 import axios from "axios";
 import React from "react";
 
@@ -77,7 +77,7 @@ export const MoviesSearch = () => {
       {/* Movie Cards */}
       <div className="row g-4 mt-3">
         {movies.length > 0 ? (
-          movies.map((movie) => <MoviesCard movie={movie} key={movie.id}/>)
+          movies.map((movie) => <MoviesCard movie={movie} key={movie.id} />)
         ) : (
           <p>No results found.</p>
         )}

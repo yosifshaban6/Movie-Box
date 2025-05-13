@@ -18,7 +18,7 @@ const Header = () => {
         {/* Left: MovieApp Title */}
         <Navbar.Brand>
           <Link to="/" className="text-dark fw-bold text-decoration-none">
-            Movie App
+            Movie Box 
           </Link>
         </Navbar.Brand>
 

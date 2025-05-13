@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MoviesCard } from "./moviesCard";
+import { MoviesCard } from "./MovieCard";
 import axios from "axios";
 import React from "react";
 
