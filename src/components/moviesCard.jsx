@@ -101,6 +101,7 @@ export const MoviesCard = (props) => {
         borderRadius: "10px",
         overflow: "hidden",
         position: "relative",
+        height :"350px"
       }}
     >
       <div

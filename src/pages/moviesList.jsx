@@ -46,11 +46,11 @@ export const MoviesList = () => {
     <div className="container-fluid py-3" >
       {/* Welcome Section */}
       <div className="welcome-section p-4 mb-4" style={{ borderRadius: "8px" , background : "#e4e0e0" }}>
-        <h1>Welcome to Our Movie App</h1>
+        <h1 className="mt-4">Welcome to Our Movie App</h1>
         <p>Browse and search through a variety of movies from the latest releases to the classic hits!</p>
 
         {/* Search Input and Button */}
-        <div className="d-flex justify-content-center align-items-center mt-3 w-100">
+        <div className="d-flex justify-content-center align-items-center w-100 mt-5">
           <input
             type="text"
             className="form-control me-2"

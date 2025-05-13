@@ -87,24 +87,43 @@ export const SeriesCard = ({ show, page, layout }) => {
   // Default vertical layout
   return (
     <Card
-      className="shadow-sm mb-3"
+      className="movie-card border-0 shadow-sm"
       onClick={handleCardClick}
       style={{
-        borderRadius: "10px",
         cursor: "pointer",
+        borderRadius: "10px",
         overflow: "hidden",
         position: "relative",
+        height :"370px"
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 1,
+          backgroundColor: "#ffffffcc",
+          borderRadius: "50%",
+          width: "24px",
+          height: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: "bold",
+        }}
+      >
+        ...
+      </div>
       <Card.Img
         variant="top"
         src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
-        style={{ height: "300px", objectFit: "cover" }}
+        style={{  borderRadius: "10px", height: "300px", objectFit: "cover" }}
       />
       <div
         style={{
           position: "absolute",
-          bottom: "60px",
+          top: "10px",
           left: "10px",
           backgroundColor: "rgb(0,0,0,.85)",
           color: "#fff",
