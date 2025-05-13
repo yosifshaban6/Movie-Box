@@ -48,9 +48,7 @@ const Watching = () => {
               <h4 className="mb-3 mt-4">Series</h4>
               <Row>
                 {watchingSeries.map(series => (
-                  <Col key={series.id} md={4} className="mb-4">
                     <SeriesCard show={series} page="watching" />
-                  </Col>
                 ))}
               </Row>
             </>

@@ -4,10 +4,12 @@ import Button from "react-bootstrap/Button";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { RiHeart3Fill } from "react-icons/ri";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import {
   ToggleFavorite as ToggleSeriesFavorite,
   RemoveFromFavorites as RemoveSeriesFavorite,
-  ToggleWatching as ToggleSeriesWatching
+  ToggleWatching as ToggleSeriesWatching,
 } from "../Store/seriesSlice";
 
 export const SeriesCard = ({ show, page, layout }) => {
@@ -44,7 +46,12 @@ export const SeriesCard = ({ show, page, layout }) => {
     return (
       <Card
         className="d-flex flex-row shadow-sm mb-3"
-        style={{ borderRadius: "12px", overflow: "hidden", cursor: "pointer", height: "220px" }}
+        style={{
+          borderRadius: "12px",
+          overflow: "hidden",
+          cursor: "pointer",
+          height: "220px",
+        }}
         onClick={handleCardClick}
       >
         <Card.Img
@@ -55,7 +62,10 @@ export const SeriesCard = ({ show, page, layout }) => {
         <Card.Body className="d-flex flex-column justify-content-between p-3">
           <div>
             <Card.Title>{show.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: "14px" }}>
+            <Card.Subtitle
+              className="mb-2 text-muted"
+              style={{ fontSize: "14px" }}
+            >
               {show.first_air_date}
             </Card.Subtitle>
             <Card.Text style={{ fontSize: "14px", color: "#444" }}>
@@ -68,7 +78,7 @@ export const SeriesCard = ({ show, page, layout }) => {
               style={{
                 color: isFavorited ? "gold" : "#ccc",
                 cursor: "pointer",
-                fontSize: "18px"
+                fontSize: "18px",
               }}
             />
             <Button
@@ -86,76 +96,91 @@ export const SeriesCard = ({ show, page, layout }) => {
 
   // Default vertical layout
   return (
-    <Card
-      className="movie-card border-0 shadow-sm"
-      onClick={handleCardClick}
-      style={{
-        cursor: "pointer",
-        borderRadius: "10px",
-        overflow: "hidden",
-        position: "relative",
-        height :"370px"
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          zIndex: 1,
-          backgroundColor: "#ffffffcc",
-          borderRadius: "50%",
-          width: "24px",
-          height: "24px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontWeight: "bold",
-        }}
+    show.poster_path && (
+      <Card
+        className="position-relative col-md-4 col-lg-2 col-sm-6 p-2 border-0"
+        onClick={handleCardClick}
+        style={{ cursor: "pointer" }}
       >
-        ...
-      </div>
-      <Card.Img
-        variant="top"
-        src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
-        style={{  borderRadius: "10px", height: "300px", objectFit: "cover" }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          backgroundColor: "rgb(0,0,0,.85)",
-          color: "#fff",
-          fontWeight: "bold",
-          padding: "5px 10px",
-          borderRadius: "50%",
-          fontSize: "14px",
-          border: `2px solid ${getRatingColor(Math.round(show.vote_average))}`,
-          boxShadow: "0 0 6px rgba(0,0,0,0.2)",
-        }}
-      >
-        {show.vote_average ? Math.round(show.vote_average) : "NR"}
-      </div>
-      <Card.Body className="p-2">
-        <Card.Title className="mb-1" style={{ fontSize: "16px" }}>
-          {show.name}
-        </Card.Title>
         <div
-          className="d-flex align-items-center justify-content-between"
-          style={{ fontSize: "13px", color: "#555" }}
+          className="w-100 rounded-3 overflow-hidden"
+          style={{ height: "300px" }}
         >
-          <span>{show.first_air_date}</span>
-          <FaHeart
-            onClick={handleFavoriteClick}
+          <Card.Img
+            variant="top"
+            src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+            className="shadow"
             style={{
-              color: isFavorited ? "gold" : "#ccc",
-              cursor: "pointer",
-              transition: "color 0.3s",
+              transform: "scale(1)",
+              transition: "transform 0.3s ease-in-out",
             }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.1)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           />
         </div>
-      </Card.Body>
-    </Card>
+        <div
+          className="position-absolute"
+          style={{
+            width: "30px",
+            height: "30px",
+            top: "290px",
+            left: "15px",
+          }}
+        >
+          <CircularProgressbar
+            value={show.popularity?.toFixed()}
+            text={`${show.popularity?.toFixed()}%`}
+            background
+            backgroundPadding={6}
+            styles={buildStyles({
+              backgroundColor: "#081c22",
+              textColor: "#fff",
+              pathColor:
+                show.popularity?.toFixed() > 100
+                  ? "green"
+                  : show.popularity?.toFixed() > 50
+                  ? "yellow"
+                  : "red",
+              trailColor: "transparent",
+            })}
+          />
+        </div>
+        <Button
+          variant="none"
+          className="border-0 position-absolute p-0"
+          onClick={handleFavoriteClick}
+          style={{
+            top: "10px",
+            right: "10px",
+          }}
+        >
+          <RiHeart3Fill
+            style={{
+              color: isFavorited
+                ? "rgb(233, 54, 22)"
+                : "rgba(158, 158, 158, 0.822)",
+              fontSize: "25px",
+            }}
+          />
+        </Button>
+        <Card.Body className="p-0 mt-3">
+          <Card.Title className=" fw-bolder fs-6 mb-1">{show.name}</Card.Title>
+          <Card.Text
+            className="m-0"
+            style={{
+              fontSize: "12px",
+            }}
+          >
+            {new Date(show.first_air_date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })}
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    )
   );
 };
