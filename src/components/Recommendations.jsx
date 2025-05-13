@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { MovieCard } from "./MovieCard";
+import { MoviesCard } from "./MovieCard";
 import axios from "axios";
+import React from "react";
 
 export const Recommendations = ({ movieId }) => {
   const [recommendations, setRecommendations] = useState([]);
@@ -43,7 +44,7 @@ export const Recommendations = ({ movieId }) => {
             >
               <div className="row g-3 justify-content-center">
                 {group.map((movie) => (
-                  <MovieCard movie={movie} />
+                  <MoviesCard movie={movie} key={movie.id} />
                 ))}
               </div>
             </div>
