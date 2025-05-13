@@ -56,10 +56,10 @@ export const SeriesDetails = () => {
         <div className="col-md-9">
           <div className="ps-3">
             <h1 className="mb-0" style={{ fontSize: "48px", color: "#000000" }}>
-              {series.original_title}
+              {series.name}
             </h1>
             <span style={{ fontSize: "12px", color: "#858585" }}>
-              {new Date(series.release_date).toLocaleDateString("en-US", {
+              {new Date(series.first_air_date).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
               })}
