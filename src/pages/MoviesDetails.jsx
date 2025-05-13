@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function MoviesDetails() {
   const [movie, setMovie] = useState();
   const { id } = useParams();
+  const movielink = movie?.homepage;
 
   useEffect(() => {
     axiosInstance
@@ -26,14 +27,14 @@ export default function MoviesDetails() {
             <div>
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
-                className="w-100 rounded-5 "
+                className="w-100 rounded-5  "
               />
             </div>
           </div>
-          <div className="col-md-9">
+          <div className="col-md-9 ">
             <div className="ps-3">
               <h1
-                className="mb-0"
+                className="mb-0 "
                 style={{ fontSize: "48px", color: "#000000" }}
               >
                 {movie?.original_title}
@@ -41,7 +42,8 @@ export default function MoviesDetails() {
               <span style={{ fontSize: "12px", color: "#858585" }}>
                 {new Date(movie?.release_date).toLocaleDateString("en-US", {
                   year: "numeric",
-                  month: "long",})}
+                  month: "long",
+                })}
               </span>
               <p>
                 Rating: {"⭐".repeat(Math.round(movie?.vote_average))} (
@@ -118,6 +120,7 @@ export default function MoviesDetails() {
               </div>
               <button
                 className="btn rounded-pill"
+               onClick={() => window.open(movielink, "_blank")}
                 style={{
                   fontSize: "1rem",
                   color: "#000000",
