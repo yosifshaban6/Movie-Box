@@ -56,9 +56,11 @@ export const MoviesSearch = () => {
           />
           <button
             onClick={() => navigate(`/search/${searchText.trim()}`)}
-            className="btn btn-warning text-white"
+            className="btn"
             style={{
               borderRadius: "5px",
+              background:"#FFE353",
+              color: "#000000",
               fontWeight: "bold",
               width: "auto", // Button size is based on content
               flexShrink: 0, // Prevent shrinking of the button

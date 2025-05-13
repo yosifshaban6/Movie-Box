@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="warning" variant="light" expand="lg">
+    <Navbar variant="light" expand="lg" style={{background :"#FFE353"}}>
       <Container>
         {/* Left: MovieApp Title */}
         <Navbar.Brand>
@@ -45,6 +45,9 @@ const Header = () => {
           <Link to="/watching" className="btn d-flex align-items-center fw-semibold">
             <FaPlay className="me-2" />
             Watching
+          </Link>
+          <Link to="/series" className="btn d-flex align-items-center fw-semibold">
+            Series
           </Link>
         </Nav>
       </Container>

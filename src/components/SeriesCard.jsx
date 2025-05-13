@@ -1,33 +1,37 @@
-import Button from "react-bootstrap/Button";
+import React from "react";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import { FaHeart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import React from 'react';
-import { ToggleFavorite, ToggleWatching, RemoveFromFavorites } from "../Store/seriesSlice";
+import {
+  ToggleFavorite as ToggleSeriesFavorite,
+  RemoveFromFavorites as RemoveSeriesFavorite,
+  ToggleWatching as ToggleSeriesWatching
+} from "../Store/seriesSlice";
 
-export const SeriesCard = (props) => {
-  const { show, page } = props;
+export const SeriesCard = ({ show, page, layout }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const favorites = useSelector((state) => state.seriesData?.favorites || []);
-  const watching = useSelector((state) => state.seriesData.watching);
+  const favorites = useSelector((state) => state.seriesData.favorites || []);
+  const watching = useSelector((state) => state.seriesData.watching || []);
 
   const isFavorited = favorites.includes(show.id);
   const isWatching = watching.includes(show.id);
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
-    dispatch(ToggleFavorite(show.id));
+    dispatch(ToggleSeriesFavorite(show.id));
   };
 
   const handleWatchClick = (e) => {
     e.stopPropagation();
-    dispatch(ToggleWatching(show.id));
+    dispatch(ToggleSeriesWatching(show.id));
   };
 
-  const handleDeleteFavorite = (e) => {
-    e.stopPropagation();
-    dispatch(RemoveFromFavorites(show.id));
+  const handleCardClick = () => {
+    navigate(`/SeriesDetails/${show.id}`);
   };
 
   const getRatingColor = (rating) => {
@@ -36,45 +40,67 @@ export const SeriesCard = (props) => {
     return "#e50914";
   };
 
+  if (layout === "horizontal") {
+    return (
+      <Card
+        className="d-flex flex-row shadow-sm mb-3"
+        style={{ borderRadius: "12px", overflow: "hidden", cursor: "pointer", height: "220px" }}
+        onClick={handleCardClick}
+      >
+        <Card.Img
+          variant="left"
+          src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+          style={{ width: "160px", objectFit: "cover" }}
+        />
+        <Card.Body className="d-flex flex-column justify-content-between p-3">
+          <div>
+            <Card.Title>{show.name}</Card.Title>
+            <Card.Subtitle className="mb-2 text-muted" style={{ fontSize: "14px" }}>
+              {show.first_air_date}
+            </Card.Subtitle>
+            <Card.Text style={{ fontSize: "14px", color: "#444" }}>
+              {show.overview?.slice(0, 120)}...
+            </Card.Text>
+          </div>
+          <div className="d-flex align-items-center justify-content-between mt-2">
+            <FaHeart
+              onClick={handleFavoriteClick}
+              style={{
+                color: isFavorited ? "gold" : "#ccc",
+                cursor: "pointer",
+                fontSize: "18px"
+              }}
+            />
+            <Button
+              variant={isWatching ? "success" : "warning"}
+              onClick={handleWatchClick}
+              className="text-white fw-bold"
+            >
+              {isWatching ? "Watching" : "Watch"}
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    );
+  }
+
+  // Default vertical layout
   return (
     <Card
-      className="series-card border-0 shadow-sm"
-      onClick={() => handleCardClick(show.id)}
+      className="shadow-sm mb-3"
+      onClick={handleCardClick}
       style={{
-        cursor: "pointer",
         borderRadius: "10px",
+        cursor: "pointer",
         overflow: "hidden",
         position: "relative",
       }}
     >
-      {/* Three Dots Menu Icon */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          zIndex: 1,
-          backgroundColor: "#ffffffcc",
-          borderRadius: "50%",
-          width: "24px",
-          height: "24px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontWeight: "bold",
-        }}
-      >
-        ...
-      </div>
-
-      {/* Poster Image */}
       <Card.Img
         variant="top"
-        src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
-        style={{ borderRadius: "10px", height: "300px", objectFit: "cover" }}
+        src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+        style={{ height: "300px", objectFit: "cover" }}
       />
-
-      {/* Circular Rating */}
       <div
         style={{
           position: "absolute",
@@ -92,17 +118,15 @@ export const SeriesCard = (props) => {
       >
         {show.vote_average ? Math.round(show.vote_average) : "NR"}
       </div>
-
-      {/* Card Body */}
       <Card.Body className="p-2">
         <Card.Title className="mb-1" style={{ fontSize: "16px" }}>
-          {show.title}
+          {show.name}
         </Card.Title>
         <div
           className="d-flex align-items-center justify-content-between"
           style={{ fontSize: "13px", color: "#555" }}
         >
-          <span>{show.first_air_date}</span> {/* Series air date */}
+          <span>{show.first_air_date}</span>
           <FaHeart
             onClick={handleFavoriteClick}
             style={{
@@ -111,31 +135,6 @@ export const SeriesCard = (props) => {
               transition: "color 0.3s",
             }}
           />
-        </div>
-
-        <div className="container mt-2">
-          <Button
-            className="btn-sm px-3 py-1 rounded-4 shadow-sm fw-bold text-uppercase border-0"
-            style={{
-              fontSize: "1rem",
-              color: "#000000",
-              backgroundColor: "#FFE353",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            onClick={handleWatchClick}
-          >
-            {isWatching ? "Watching..." : "Watch"}
-          </Button>
-
-          {page === "favorites" && (
-            <Button
-              className="btn-danger btn-sm ms-2"
-              onClick={handleDeleteFavorite}
-            >
-              Remove from Favorites
-            </Button>
-          )}
         </div>
       </Card.Body>
     </Card>

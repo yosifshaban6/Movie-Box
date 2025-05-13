@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React from 'react';
-import './moviesCard.css'
+import './moviesCard.css';
 
 import {
   ToggleFavorite,
@@ -13,7 +13,7 @@ import {
 } from "../Store/movieSlice";
 
 export const MoviesCard = (props) => {
-  const { movie, page } = props;
+  const { movie, page, layout } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ export const MoviesCard = (props) => {
   const isWatching = watching.includes(movie.id);
 
   const handleFavoriteClick = (e) => {
-    e.stopPropagation(); // prevent navigating when clicking the heart
+    e.stopPropagation();
     dispatch(ToggleFavorite(movie.id));
   };
 
@@ -48,6 +48,50 @@ export const MoviesCard = (props) => {
     return "#e50914"; // red
   };
 
+  if (layout === "horizontal") {
+    // Horizontal (favorite-page-style) layout
+    return (
+      <Card className="d-flex flex-row shadow-sm p-2" onClick={handleCardClick} style={{ borderRadius: "15px", cursor: "pointer" }}>
+        <Card.Img
+          variant="left"
+          src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+          style={{ width: "150px", borderRadius: "10px", objectFit: "cover" }}
+        />
+        <div className="d-flex flex-column justify-content-between ps-3 flex-grow-1">
+          <Card.Body className="p-0">
+            <Card.Title style={{ fontSize: "22px", fontWeight: "bold" }}>
+              {movie.title}
+            </Card.Title>
+            <div style={{ fontSize: "14px", color: "#888", marginBottom: "4px" }}>{movie.release_date}</div>
+            <div className="d-flex align-items-center mb-2">
+              <span style={{ color: "#000" }}>
+                {"★".repeat(Math.floor(movie.vote_average / 2)) + "☆".repeat(5 - Math.floor(movie.vote_average / 2))}
+              </span>
+              <span className="ms-2" style={{ color: "#666" }}>{movie.vote_count}</span>
+            </div>
+            <Card.Text style={{ fontSize: "14px", color: "#444" }}>
+              {movie.overview?.slice(0, 150)}...
+            </Card.Text>
+          </Card.Body>
+          <div className="d-flex justify-content-between align-items-center">
+            <FaHeart
+              onClick={handleFavoriteClick}
+              style={{
+                color: isFavorited ? "gold" : "#ccc",
+                cursor: "pointer",
+                fontSize: "20px",
+              }}
+            />
+            <Button variant="warning" onClick={handleWatchClick} className="text-white fw-bold">
+              {isWatching ? "Watching" : "Watch"}
+            </Button>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  // Default vertical layout
   return (
     <Card
       className="movie-card border-0 shadow-sm"
@@ -59,7 +103,6 @@ export const MoviesCard = (props) => {
         position: "relative",
       }}
     >
-      {/* Three Dots Menu Icon */}
       <div
         style={{
           position: "absolute",
@@ -79,21 +122,19 @@ export const MoviesCard = (props) => {
         ...
       </div>
 
-      {/* Poster Image */}
       <Card.Img
         variant="top"
         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
         style={{ borderRadius: "10px", height: "300px", objectFit: "cover" }}
       />
 
-      {/* Circular Rating */}
       <div
         style={{
           position: "absolute",
           bottom: "60px",
           left: "10px",
           backgroundColor: "rgb(0,0,0,.85)",
-          color : "#fff",
+          color: "#fff",
           fontWeight: "bold",
           padding: "5px 10px",
           borderRadius: "50%",
@@ -105,8 +146,6 @@ export const MoviesCard = (props) => {
         {movie.vote_average ? Math.round(movie.vote_average) : "NR"}
       </div>
 
-
-      {/* Card Body */}
       <Card.Body className="p-2">
         <Card.Title className="mb-1" style={{ fontSize: "16px" }}>
           {movie.title}
@@ -127,6 +166,5 @@ export const MoviesCard = (props) => {
         </div>
       </Card.Body>
     </Card>
-
   );
 };

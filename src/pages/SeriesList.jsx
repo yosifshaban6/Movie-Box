@@ -21,7 +21,13 @@ export const SeriesList = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container-fluid py-3">
+        {/* Welcome Section */}
+        <div className="welcome-section p-4 mb-4" style={{ borderRadius: "8px", background: "#e4e0e0" }}>
+          <h1>Welcome to Our Movie App</h1>
+          <p>Browse and search through a variety of movies from the latest releases to the classic hits!</p>
+
+        </div>
         <div className="row g-4 ">
           {Series.map((show) => {
             return (
