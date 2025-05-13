@@ -55,7 +55,15 @@ export const SeriesDetails = () => {
         </div>
         <div className="col-md-9">
           <div className="ps-3">
-            <h1 className="mb-0" style={{ fontSize: "48px", color: "#000000" }}>
+            <h1
+              className="mb-0"
+              style={{
+                fontSize: "44px",
+                color: "#000000",
+                maxWidth: "500px",
+                lineHeight: "1.2", 
+              }}
+            >
               {series.name}
             </h1>
             <span style={{ fontSize: "12px", color: "#858585" }}>
@@ -131,7 +139,7 @@ export const SeriesDetails = () => {
                 >
                   Duration:{" "}
                   <span style={{ fontWeight: "400" }}>
-                    {series.episode_run_time[0]} Min
+                    {series.episode_run_time[0] || series.next_episode_to_air.runtime} Min
                   </span>
                 </h5>
               </div>
