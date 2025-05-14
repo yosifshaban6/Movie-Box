@@ -14,8 +14,9 @@ export const SeriesList = () => {
 
   useEffect(() => {
     axiosSeries
-      .get(`popular?api_key=${apiKey}`)
+      .get(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`)
       .then((res) => {
+        console.log(res.data.results)
         if (res?.data?.results?.length) {
           setSeries(res.data.results);
           dispatch(SetBannerData(res.data.results));
