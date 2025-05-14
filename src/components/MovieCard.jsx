@@ -1,12 +1,12 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RiHeart3Fill } from "react-icons/ri";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import React from "react";
+import React, { useContext } from "react";
 import "./MovieCard.css";
 
 import {
@@ -14,8 +14,10 @@ import {
   ToggleWatching,
   RemoveFromFavorites,
 } from "../Store/movieSlice";
+import { LanguageContext } from "../LanguageContext";
 
 export const MoviesCard = (props) => {
+  const { language } = useContext(LanguageContext);
   const { movie, layout } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -184,7 +186,7 @@ export const MoviesCard = (props) => {
               fontSize: "12px",
             }}
           >
-            {new Date(movie.release_date).toLocaleDateString("en-US", {
+            {new Date(movie.release_date).toLocaleDateString(language, {
               month: "short",
               day: "2-digit",
               year: "numeric",

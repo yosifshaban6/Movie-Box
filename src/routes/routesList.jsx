@@ -19,6 +19,7 @@ export const RoutesList = () => {
       <Route path="/MoviesDetails/:id" element={<MoviesDetails />}></Route>
       <Route path="/SeriesDetails/:id" element={<SeriesDetails />}></Route>
       <Route path="/search/" element={<MoviesSearch />} />
+      <Route path="*" element={<MoviesList/>} />
     </Routes>
   );
 };

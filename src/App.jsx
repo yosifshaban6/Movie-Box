@@ -5,12 +5,15 @@ import { RoutesList } from "./routes/routesList";
 import { Header } from "./components/Header";
 import React from "react";
 import { BrowserRouter } from "react-router";
+import { LanguageProvider } from "./LanguageContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Header></Header>
-      <RoutesList></RoutesList>
+      <LanguageProvider>
+        <Header />
+        <RoutesList />
+      </LanguageProvider>
     </BrowserRouter>
   );
 }

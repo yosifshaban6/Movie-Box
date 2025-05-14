@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SetBannerData } from "../Store/movieSlice";
@@ -6,18 +6,47 @@ import { MoviesCard } from "../components/MovieCard";
 import axios from "axios";
 import React from "react";
 import "./MoviesList.css";
+import { LanguageContext } from "../LanguageContext";
+import { appItems } from "../services/config";
 
 export const MoviesList = () => {
   const [movies, setMovies] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const { language } = useContext(LanguageContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [items, setItems] = useState(
+    appItems[language.substring(0, 2).toLowerCase()],
+  );
+  const [isRTL, setIsRTL] = useState(document.documentElement.dir === "rtl");
+
   useEffect(() => {
+    setItems(appItems[language.substring(0, 2).toLowerCase()]);
+    document.documentElement.dir = language.startsWith("ar") ? "rtl" : "ltr";
+    setIsRTL(document.documentElement.dir === "rtl");
+  }, [language]);
+
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      url: "https://api.themoviedb.org/3/discover/movie",
+      params: {
+        include_adult: "false",
+        include_video: "false",
+        language: language,
+        page: "1",
+        sort_by: "popularity.desc",
+      },
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYzc5ZmViNzNmOTdlOTcyMjhjYTdlM2E4N2YwZmZjYyIsIm5iZiI6MTc0NjgxNjcwOS43NTUsInN1YiI6IjY4MWU0ZWM1OThjNmU1OWFkZjM0OGRkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2Oc3iu5fKvJqr1U-xWZqwTWB1UVedsSeUhGLPwMCRuw",
+      },
+    };
+
     axios
-      .get(
-        "https://api.themoviedb.org/3/movie/now_playing?api_key=0c79feb73f97e97228ca7e3a87f0ffcc",
-      )
+      .request(options)
       .then((res) => {
         if (res?.data?.results?.length) {
           setMovies(res.data.results);
@@ -30,7 +59,7 @@ export const MoviesList = () => {
         console.error("Error fetching movies:", error);
         setMovies([]);
       });
-  }, [dispatch]);
+  }, [dispatch, language]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -51,23 +80,22 @@ export const MoviesList = () => {
         className="welcome-section p-4 mb-4"
         style={{ borderRadius: "8px", background: "#e4e0e0" }}
       >
-        <h1 className="mt-4">Welcome to Our Movie Box</h1>
-        <p>
-          Browse and search through a variety of movies from the latest releases
-          to the classic hits!
-        </p>
+        <h1 className="mt-4 mb-3">{items.welcome}</h1>
+        <p>{items.description}</p>
 
         {/* Search Input and Button */}
-        <div className="d-flex justify-content-center align-items-center w-100 mt-5">
-          <input
-            type="text"
-            className="form-control me-2"
-            placeholder="Search movies..."
-            value={searchText}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            style={{ flexGrow: 1, marginRight: "10px" }} // Allow input to take full width
-          />
+        <div className="d-flex justify-content-center align-items-center gap-2 w-100 mt-5">
+          <div className="input-group" style={{ flexGrow: 1 }}>
+            <input
+              type="text"
+              className="form-control rounded-1 py-2"
+              placeholder={items.searchDescription}
+              value={searchText}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              style={{ fontSize: 14 }}
+            />
+          </div>
           <button
             onClick={() => navigate(`/search/${searchText.trim()}`)}
             className="btn"
@@ -80,7 +108,7 @@ export const MoviesList = () => {
               flexShrink: 0, // Prevent shrinking
             }}
           >
-            Search
+            {items.search}
           </button>
         </div>
       </div>
@@ -88,7 +116,7 @@ export const MoviesList = () => {
       {/* Movies List */}
       <div className="row g-4">
         {movies.map((movie) => (
-          <MoviesCard movie={movie} key={movie.id}/>
+          <MoviesCard movie={movie} key={movie.id} />
         ))}
       </div>
     </div>

@@ -1,55 +1,93 @@
-import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
-import { FaHeart, FaPlay } from 'react-icons/fa';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import React from 'react';
+import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
+import { FaVideo, FaHeart, FaPlay } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import React from "react";
+import { LanguageContext } from "../LanguageContext";
+import { appItems } from "../services/config";
 
 export const Header = () => {
-  const [language, setLanguage] = useState('EN');
+  const { language, setLanguage } = useContext(LanguageContext);
+  const [items, setItems] = useState(
+    appItems[language.substring(0, 2).toLowerCase()],
+  );
+  const [isRTL, setIsRTL] = useState(document.documentElement.dir === "rtl");
 
-  const handleLanguageChange = (lang) => {
-    setLanguage(lang);
-    // Add i18n logic if needed
+  const handleLanguageChange = (value) => {
+    console.log(value);
+    setLanguage(value);
   };
 
+  useEffect(() => {
+    setItems(appItems[language.substring(0, 2).toLowerCase()]);
+    document.documentElement.dir = language.startsWith("ar") ? "rtl" : "ltr";
+    setIsRTL(document.documentElement.dir === "rtl");
+  }, [language]);
+
   return (
-    <Navbar variant="light" expand="lg" style={{background :"#FFE353"}}>
+    <Navbar variant="light" expand="lg" style={{ background: "#FFE353" }}>
       <Container>
-        {/* Left: MovieApp Title */}
         <Navbar.Brand>
           <Link to="/" className="text-dark fw-bold text-decoration-none">
-            Movie Box 
+            {items.projectTitle}
           </Link>
         </Navbar.Brand>
 
-        {/* Right: Nav Options */}
-        <Nav className="ms-auto d-flex align-items-center gap-3">
-          {/* Language Dropdown */}
-          <Dropdown>
-            <Dropdown.Toggle variant="outline" id="dropdown-lang">
-              {language}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => handleLanguageChange('EN')}>EN</Dropdown.Item>
-              <Dropdown.Item onClick={() => handleLanguageChange('AR')}>AR</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
+        <Nav
+          className={`${
+            isRTL ? "me-auto" : "ms-auto"
+          } d-flex align-items-center gap-3`}
+        >
           {/* Watch List */}
-          <Link to="/favorites" className="btn d-flex align-items-center">
-            <FaHeart className="me-2" />
-            Watch List
+          <Link
+            to="/favorites"
+            className={`btn d-flex align-items-center fw-semibold ${
+              isRTL ? "ms-2" : "me-2"
+            }`}
+          >
+            <FaHeart className={`${isRTL ? "ms-2" : "me-2"}`} />
+            {items.favorites}
           </Link>
 
           {/* Watching Button */}
-          <Link to="/watching" className="btn d-flex align-items-center fw-semibold">
-            <FaPlay className="me-2" />
-            Watching
+          <Link
+            to="/watching"
+            className={`btn d-flex align-items-center fw-semibold ${
+              isRTL ? "ms-2" : "me-2"
+            }`}
+          >
+            <FaPlay className={`${isRTL ? "ms-2" : "me-2"}`} />
+            {items.watchList}
           </Link>
-          <Link to="/series" className="btn d-flex align-items-center fw-semibold">
-            Series
+          <Link
+            to="/series"
+            className={`btn d-flex align-items-center fw-semibold ${
+              isRTL ? "ms-2" : "me-2"
+            }`}
+          >
+            <FaVideo className={`${isRTL ? "ms-2" : "me-2"}`} />
+            {items.series}
           </Link>
         </Nav>
+
+        {/* Language Dropdown */}
+        <Dropdown onSelect={(eventKey) => handleLanguageChange(eventKey)}>
+          <Dropdown.Toggle
+            className="fw-semibold"
+            variant="outline"
+            id="dropdown-lang"
+          >
+            {language.substring(0, 2).toUpperCase()}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item className="fw-semibold" id="en" eventKey="en-US">
+              EN
+            </Dropdown.Item>
+            <Dropdown.Item className="fw-semibold" id="ar" eventKey="ar-EG">
+              AR
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Container>
     </Navbar>
   );
