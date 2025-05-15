@@ -20,12 +20,10 @@ export const SeriesList = () => {
   );
   const [series, setSeries] = useState([]);
   const dispatch = useDispatch();
-  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
-  // Pagination states
   const [page, setPage] = useState(1);
-  const [totalPages] = useState(100); // You can adjust totalPages dynamically if the API provides total_pages info
+  const [totalPages] = useState(100); 
 
   useEffect(() => {
     setItems(appItems[language.substring(0, 2).toLowerCase()]);
@@ -65,21 +63,10 @@ export const SeriesList = () => {
       });
   }, [dispatch, language, page]);
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
-    if (value.trim()) {
-      navigate(`/search/${value.trim()}`);
-    }
-  };
-
-  const handleFocus = () => {
-    navigate("/search/");
-  };
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    navigate(`/?page=${newPage}`);
+    navigate(`/series/?page=${newPage}`);
   };
 
   function getPaginationRange(page, totalPages) {
@@ -105,44 +92,6 @@ export const SeriesList = () => {
   return (
     <>
       <div className="container py-3">
-        {/* Welcome Section */}
-        <div
-          className="welcome-section p-4 mb-4"
-          style={{ borderRadius: "8px", background: "#e4e0e0" }}
-        >
-          <h1 className="mt-4">{items.welcome}</h1>
-          <p>{items.description}</p>
-
-          {/* Search Input and Button */}
-          <div className="d-flex justify-content-center align-items-center gap-2 w-100 mt-5">
-            <div className="input-group" style={{ flexGrow: 1 }}>
-              <input
-                type="text"
-                className="form-control rounded-1 py-2"
-                placeholder={items.searchDescription}
-                value={searchText}
-                onChange={handleChange}
-                onFocus={handleFocus}
-                style={{ fontSize: 14 }}
-              />
-            </div>
-            <button
-              onClick={() => navigate(`/search/${searchText.trim()}`)}
-              className="btn"
-              style={{
-                borderRadius: "5px",
-                background: "#FFE353",
-                color: "#000000",
-                fontWeight: "bold",
-                width: "auto",
-                flexShrink: 0,
-              }}
-            >
-              {items.search}
-            </button>
-          </div>
-        </div>
-
         {/* Series List */}
         <div className="row g-4">
           {series.map((show) => (
