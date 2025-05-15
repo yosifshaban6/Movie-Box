@@ -143,7 +143,7 @@ export const MoviesCard = (props) => {
         >
           <CircularProgressbar
             value={movie.vote_average.toFixed()}
-            text={`${movie.vote_average.toFixed()}%`}
+            text={`${movie.vote_average.toFixed()}/10`}
             maxValue={10}
             background
             backgroundPadding={6}
@@ -151,12 +151,13 @@ export const MoviesCard = (props) => {
               backgroundColor: "#081c22",
               textColor: "#fff",
               pathColor:
-                movie.vote_average.toFixed() > 7 
+                movie.vote_average.toFixed() > 7
                   ? "green"
                   : movie.vote_average.toFixed() > 5
                   ? "yellow"
                   : "red",
               trailColor: "transparent",
+              textSize: "26px",
             })}
           />
         </div>
