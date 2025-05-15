@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { MoviesCard } from "./MovieCard";
 import axios from "axios";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
 import React from "react";
 
 export const Recommendations = ({ movieId }) => {
@@ -28,66 +30,90 @@ export const Recommendations = ({ movieId }) => {
     groupedMovies.push(recommendations.slice(i, i + chunkSize));
   }
 
-  return (
-    <div className="container">
-      <h4 className="mb-4">Recommended Movies</h4>
+return (
+  <div className="container">
+    <h4 className="mb-4">Recommended Movies</h4>
+    <div
+      id="recommendationCarousel"
+      className="carousel slide position-relative" 
+      data-bs-ride="carousel"
+      style={{ padding: "0 60px" }} 
+    >
       <div
-        id="recommendationCarousel"
-        className="carousel slide"
-        data-bs-ride="carousel"
+        className="carousel-inner"
+        style={{ padding: "10px 0" }} 
       >
-        <div className="carousel-inner">
-          {groupedMovies.map((group, idx) => (
-            <div
-              key={idx}
-              className={`carousel-item ${idx === 0 ? "active" : ""}`}
-            >
-              <div className="row g-3 justify-content-center">
-                {group.map((movie) => (
-                  <MoviesCard movie={movie} key={movie.id} />
-                ))}
-              </div>
+        {groupedMovies.map((group, idx) => (
+          <div
+            key={idx}
+            className={`carousel-item ${idx === 0 ? "active" : ""}`}
+          >
+            <div className="row g-3 justify-content-center m-2">
+              {group.map((movie) => (
+                <MoviesCard movie={movie} key={movie.id} />
+              ))}
             </div>
-          ))}
-        </div>
-
-        {groupedMovies.length > 1 && (
-          <>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target="#recommendationCarousel"
-              data-bs-slide="prev"
-            >
-              <span
-                style={{
-                  color: "black",
-                  fontSize: "50px",
-                  marginRight: "50px",
-                }}
-              >
-                &#11164;
-              </span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target="#recommendationCarousel"
-              data-bs-slide="next"
-            >
-              <span
-                style={{
-                  color: "black",
-                  fontSize: "50px",
-                  marginLeft: "50px",
-                }}
-              >
-                &#11166;
-              </span>
-            </button>
-          </>
-        )}
+          </div>
+        ))}
       </div>
+
+      {groupedMovies.length > 1 && (
+        <div className="d-none d-md-block">
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#recommendationCarousel"
+            data-bs-slide="prev"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "10px", 
+              transform: "translateY(-50%)",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              borderRadius: "50%",
+              width: "50px",
+              height: "50px",
+              border: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              zIndex: 10,
+              boxShadow: "0 0 8px rgba(0,0,0,0.3)", 
+            }}
+          >
+            <FaChevronLeft style={{ fontSize: "24px", color: "white" }} />
+          </button>
+
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#recommendationCarousel"
+            data-bs-slide="next"
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "10px", 
+              transform: "translateY(-50%)",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              borderRadius: "50%",
+              width: "50px",
+              height: "50px",
+              border: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              zIndex: 10,
+              boxShadow: "0 0 8px rgba(0,0,0,0.3)", 
+            }}
+          >
+            <FaChevronRight style={{ fontSize: "24px", color: "white" }} />
+          </button>
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
+
 };

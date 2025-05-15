@@ -5,18 +5,31 @@ import { SeriesCard } from "../components/SeriesCard";
 import { useDispatch } from "react-redux";
 import { SetBannerData } from "../Store/seriesSlice";
 import React from "react";
+import Pagination from "react-bootstrap/Pagination";
 import { LanguageContext } from "../LanguageContext";
 import { appItems } from "../services/config";
+
+const range = (start, end) => {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+};
 
 export const SeriesList = () => {
   const { language } = useContext(LanguageContext);
   const [items, setItems] = useState(
-    appItems[language.substring(0, 2).toLowerCase()],
+    appItems[language.substring(0, 2).toLowerCase()]
   );
-  const [Series, setSeries] = useState([]);
+  const [series, setSeries] = useState([]);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
+
+  // Pagination states
+  const [page, setPage] = useState(1);
+  const [totalPages] = useState(100); // You can adjust totalPages dynamically if the API provides total_pages info
+
+  useEffect(() => {
+    setItems(appItems[language.substring(0, 2).toLowerCase()]);
+  }, [language]);
 
   useEffect(() => {
     const options = {
@@ -26,7 +39,7 @@ export const SeriesList = () => {
         include_adult: "false",
         include_video: "false",
         language: language,
-        page: "1",
+        page: page,
         sort_by: "popularity.desc",
       },
       headers: {
@@ -50,7 +63,7 @@ export const SeriesList = () => {
         console.error("Error fetching series:", error);
         setSeries([]);
       });
-  }, [dispatch, language]);
+  }, [dispatch, language, page]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -63,6 +76,31 @@ export const SeriesList = () => {
   const handleFocus = () => {
     navigate("/search/");
   };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    navigate(`/?page=${newPage}`);
+  };
+
+  function getPaginationRange(page, totalPages) {
+    const delta = Math.min(5, page - 1);
+    let start = page - delta;
+    let end = Math.min(page + 5 - delta, totalPages);
+
+    if (end - start + 1 > 6) {
+      end = totalPages;
+      start = Math.max(1, end - 5);
+    }
+
+    if (start < 1) {
+      start = 1;
+      end = Math.min(6, totalPages);
+    }
+
+    return { start, end };
+  }
+
+  const { start, end } = getPaginationRange(page, totalPages);
 
   return (
     <>
@@ -96,18 +134,51 @@ export const SeriesList = () => {
                 background: "#FFE353",
                 color: "#000000",
                 fontWeight: "bold",
-                width: "auto", // Let button width be content-based
-                flexShrink: 0, // Prevent shrinking
+                width: "auto",
+                flexShrink: 0,
               }}
             >
               {items.search}
             </button>
           </div>
         </div>
-        <div className="row g-4 ">
-          {Series.map((show) => {
-            return <SeriesCard show={show} key={show.id} />;
-          })}
+
+        {/* Series List */}
+        <div className="row g-4">
+          {series.map((show) => (
+            <SeriesCard show={show} key={show.id} />
+          ))}
+        </div>
+
+        {/* Centered Pagination */}
+        <div className="d-flex justify-content-center mt-4">
+          <Pagination>
+            <Pagination.First
+              onClick={() => handlePageChange(1)}
+              disabled={page === 1}
+            />
+            <Pagination.Prev
+              onClick={() => handlePageChange(Math.max(page - 1, 1))}
+              disabled={page === 1}
+            />
+            {range(start, end).map((pageNumber) => (
+              <Pagination.Item
+                key={pageNumber}
+                active={pageNumber === page}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
+              disabled={page === totalPages}
+            />
+            <Pagination.Last
+              onClick={() => handlePageChange(totalPages)}
+              disabled={page === totalPages}
+            />
+          </Pagination>
         </div>
       </div>
     </>

@@ -23,7 +23,7 @@ export const MoviesList = () => {
   const dispatch = useDispatch();
 
   const [items, setItems] = useState(
-    appItems[language.substring(0, 2).toLowerCase()],
+    appItems[language.substring(0, 2).toLowerCase()]
   );
   const [isRTL, setIsRTL] = useState(document.documentElement.dir === "rtl");
 
@@ -113,11 +113,12 @@ export const MoviesList = () => {
         className="welcome-section p-4 mb-4"
         style={{ borderRadius: "8px", background: "#e4e0e0" }}
       >
-        <h1 className="mt-4 mb-3">{items.welcome}</h1>
-        <p>{items.description}</p>
-
+        <div>
+          <h1 className="mt-4 mb-3">{items.welcome}</h1>
+          <p>{items.description}</p>
+        </div>
         {/* Search Input and Button */}
-        <div className="d-flex justify-content-center align-items-center gap-2 w-100 mt-5">
+        <div className="d-flex justify-content-center align-items-center gap-2 ">
           <div className="input-group" style={{ flexGrow: 1 }}>
             <input
               type="text"
@@ -147,7 +148,7 @@ export const MoviesList = () => {
       </div>
 
       {/* Movies List */}
-      <div className="row g-4">
+      <div className="row g-4 m-4">
         {movies.map((movie) => (
           <MoviesCard movie={movie} key={movie.id} />
         ))}
