@@ -82,6 +82,7 @@ export const MoviesList = () => {
   const handlePageChange = (newPage) => {
     console.log(page);
     setPage(newPage);
+    navigate(`/?page=${newPage}`);
   };
   return (
     <div className="container py-3">
