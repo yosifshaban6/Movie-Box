@@ -1,14 +1,25 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { MoviesCard } from "../components/MovieCard";
 import axios from "axios";
 import React from "react";
+import { LanguageContext } from "../LanguageContext";
+import { appItems } from "../services/config";
 
 export const MoviesSearch = () => {
+  const { language } = useContext(LanguageContext);
+  const [items, setItems] = useState(
+    appItems[language.substring(0, 2).toLowerCase()],
+  );
   const { query } = useParams();
   const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [searchText, setSearchText] = useState(query || "");
+
+  useEffect(() => {
+    setItems(appItems[language.substring(0, 2).toLowerCase()]);
+    document.documentElement.dir = language.startsWith("ar") ? "rtl" : "ltr";
+  }, [language]);
 
   useEffect(() => {
     if (!query) {
@@ -16,19 +27,32 @@ export const MoviesSearch = () => {
       return;
     }
 
+    const options = {
+      method: "GET",
+      url: "https://api.themoviedb.org/3/search/movie",
+      params: {
+        query: query,
+        include_adult: "false",
+        language: language,
+      },
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYzc5ZmViNzNmOTdlOTcyMjhjYTdlM2E4N2YwZmZjYyIsIm5iZiI6MTc0NjgxNjcwOS43NTUsInN1YiI6IjY4MWU0ZWM1OThjNmU1OWFkZjM0OGRkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2Oc3iu5fKvJqr1U-xWZqwTWB1UVedsSeUhGLPwMCRuw",
+      },
+    };
+
     axios
-      .get(
-        `https://api.themoviedb.org/3/search/movie?api_key=0c79feb73f97e97228ca7e3a87f0ffcc&query=${query}`,
-      )
+      .request(options)
       .then((res) => {
-        console.log(res.data.results);
+        console.log(res.data);
         setMovies(res.data.results || []);
       })
       .catch((error) => {
         console.error("Error fetching search results:", error);
         setMovies([]);
       });
-  }, [query]);
+  }, [query, language]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -42,12 +66,12 @@ export const MoviesSearch = () => {
   };
 
   return (
-    <div className="container py-3">
-      <div className="d-flex justify-content-center align-items-center mt-3 w-100">
+    <div className="container">
+      <div className="d-flex gap-2 align-items-center mt-3 w-100">
         <input
           type="text"
           className="form-control me-2"
-          placeholder="Search movies..."
+          placeholder={items.searchDescription}
           value={searchText}
           onChange={handleChange}
           onFocus={() => navigate("/search/")}
@@ -65,15 +89,15 @@ export const MoviesSearch = () => {
             flexShrink: 0, // Prevent shrinking of the button
           }}
         >
-          Search
+          {items.search}
         </button>
       </div>
 
       {/* Display Search Results */}
       {query && (
-        <h4>
-          Search Results for: <strong>{query}</strong>
-        </h4>
+        <h5 className="fs-6 m-3">
+          <strong>{items.searching}</strong>: {query}
+        </h5>
       )}
 
       {/* Movie Cards */}
@@ -81,7 +105,7 @@ export const MoviesSearch = () => {
         {movies.length > 0 ? (
           movies.map((movie) => <MoviesCard movie={movie} key={movie.id} />)
         ) : (
-          <p>No results found.</p>
+          <p>{items.noResults}</p>
         )}
       </div>
     </div>

@@ -1,11 +1,19 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { MoviesCard } from "../components/MovieCard";
 import { SeriesCard } from "../components/SeriesCard";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate for React Router v6
+import { appItems } from "../services/config";
+import { LanguageContext } from "../LanguageContext";
 
 export const Watching = () => {
+  const { language } = useContext(LanguageContext);
+  console.log(language);
+  const [items, setItems] = useState(
+    appItems[language.substring(0, 2).toLowerCase()],
+  );
   const watching = useSelector((state) => state.movieData.watching || []);
   const allMovies = useSelector((state) => state.movieData.bannerData || []);
   const watchingMovies = allMovies.filter((movie) =>
@@ -30,17 +38,17 @@ export const Watching = () => {
 
   return (
     <Container className="py-4">
-      <h2 className="mb-4">Watching Movies</h2>
+      <h2 className="mb-4">{items.watchList}</h2>
 
       {hasWatching ? (
         <>
           {/* Watching Movies */}
           {watchingMovies.length > 0 && (
             <>
-              <h4 className="mb-3">Movies</h4>
+              <h4 className="mb-3 mt-4">{items.movies}</h4>
               <Row>
                 {watchingMovies.map((movie) => (
-                    <MoviesCard movie={movie} page="watching" />
+                  <MoviesCard movie={movie} page="watching" />
                 ))}
               </Row>
             </>
@@ -49,7 +57,7 @@ export const Watching = () => {
           {/* Watching Series */}
           {watchingSeries.length > 0 && (
             <>
-              <h4 className="mb-3 mt-4">Series</h4>
+              <h4 className="mb-3 mt-4">{items.series}</h4>
               <Row>
                 {watchingSeries.map((series) => (
                   <SeriesCard show={series} page="watching" />
@@ -67,15 +75,13 @@ export const Watching = () => {
             src="/1.png"
             alt="No movies or series being watched"
             className="mb-4"
-            style={{ Width: "300px", height: "200px" }}
+            style={{ Width: "150px", height: "150px" }}
           />
           <Button onClick={goHome} variant="" style={{ background: "#FFE353" }}>
-            Back to Home
+            {items.backToHomePage}
           </Button>
         </div>
       )}
     </Container>
   );
 };
-
-
