@@ -12,7 +12,7 @@ export function LanguageProvider({ children }) {
   }, [language]);
 
   useEffect(() => {
-    document.documentElement.dir = language.startsWith("ar") ? "rtl" : "ltr";
+    document.documentElement.dir = language.startsWith("ar")  ? "rtl" : "ltr";
   }, [language]);
 
   return (
