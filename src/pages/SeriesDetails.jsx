@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToggleFavorite, ToggleWatching } from "../Store/seriesSlice";
@@ -6,8 +6,14 @@ import { FaHeart } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Recommendations } from "../components/Recommendations";
 import axios from "axios";
+import { appItems } from "../services/config";
+import { LanguageContext } from "../LanguageContext";
 
 export const SeriesDetails = () => {
+  const { language } = useContext(LanguageContext);
+  const [items, setItems] = useState(
+    appItems[language.substring(0, 2).toLowerCase()],
+  );
   const { id } = useParams();
   const [series, setseries] = useState(null);
   const dispatch = useDispatch();
@@ -27,16 +33,26 @@ export const SeriesDetails = () => {
   };
 
   useEffect(() => {
+    setItems(appItems[language.substring(0, 2).toLowerCase()]);
+
+    const options = {
+      method: "GET",
+      params: { language: language },
+      url: `https://api.themoviedb.org/3/tv/${id}`,
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYzc5ZmViNzNmOTdlOTcyMjhjYTdlM2E4N2YwZmZjYyIsIm5iZiI6MTc0NjgxNjcwOS43NTUsInN1YiI6IjY4MWU0ZWM1OThjNmU1OWFkZjM0OGRkMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2Oc3iu5fKvJqr1U-xWZqwTWB1UVedsSeUhGLPwMCRuw",
+      },
+    };
+
     axios
-      .get(
-        `https://api.themoviedb.org/3/tv/${id}?api_key=0c79feb73f97e97228ca7e3a87f0ffcc`
-      )
+      .request(options)
       .then((res) => {
-        console.log(res.data);
         setseries(res.data);
       })
-      .catch((err) => console.error("Error fetching series:", err));
-  }, [id]);
+      .catch((err) => console.error("Error fetching movie:", err));
+  }, [id, language]);
 
   if (!series) return <div className="text-center mt-5">Loading...</div>;
 
@@ -50,44 +66,37 @@ export const SeriesDetails = () => {
           <img
             src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`}
             className="w-100 rounded-5"
-            alt={series.original_title}
+            alt={series.name}
           />
         </div>
         <div className="col-md-9">
           <div className="ps-3">
-            <h1
-              className="mb-0"
-              style={{
-                fontSize: "44px",
-                color: "#000000",
-                maxWidth: "500px",
-                lineHeight: "1.2", 
-              }}
-            >
+            <h1 className="mb-0" style={{ fontSize: "48px", color: "#000000" }}>
               {series.name}
             </h1>
             <span style={{ fontSize: "12px", color: "#858585" }}>
-              {new Date(series.first_air_date).toLocaleDateString("en-US", {
+              {new Date(series.first_air_date).toLocaleDateString(language, {
+                month: "short",
+                day: "2-digit",
                 year: "numeric",
-                month: "long",
               })}
             </span>
             <p>
-              Rating: {"⭐".repeat(Math.round(series.vote_average / 2))} (
-              {series.vote_average.toFixed(1)})
+              {items.rating}: {"⭐".repeat(Math.round(series.vote_average / 2))}{" "}
+              ({series.vote_average.toFixed(1)})
             </p>
-            <p className="mt-3" style={{ fontSize: "24px", color: "#000000" }}>
+            <p className="mt-3" style={{ fontSize: "18px", color: "#000000" }}>
               {series.overview}
             </p>
 
             <ul
-              className="my-3 d-flex flex-wrap ps-0"
+              className="d-flex flex-warp gap-2 m-0 p-0"
               style={{ listStyleType: "none" }}
             >
               {series.genres?.map((genre, index) => (
-                <li key={genre.id} className={index !== 0 ? "ms-2" : ""}>
-                  <button
-                    className="btn rounded-pill"
+                <li key={genre.id}>
+                  <div
+                    className="px-3 py-1 rounded-5"
                     style={{
                       fontSize: "1rem",
                       color: "#000000",
@@ -95,23 +104,20 @@ export const SeriesDetails = () => {
                     }}
                   >
                     {genre.name}
-                  </button>
+                  </div>
                 </li>
               ))}
             </ul>
 
-            <div className="my-3 d-flex align-items-center gap-3">
+            <div className="my-3 mx-0 d-flex p-0 gap-3 align-items-center">
               <button
-                className="btn btn-sm rounded-pill"
+                className="btn rounded-pill"
                 onClick={handleWatchClick}
                 style={{
-                  backgroundColor: isWatching ? "#FFE353" : "#FFE353",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  color: "#000000",
+                  backgroundColor: "#FFE353",
                 }}
               >
-                {isWatching ? "Watching..." : "Watch"}
+                {isWatching ? items.watching : items.addToWatchList}
               </button>
 
               <FaHeart
@@ -137,10 +143,11 @@ export const SeriesDetails = () => {
                     color: "#000000",
                   }}
                 >
-                  Duration:{" "}
-                  <span style={{ fontWeight: "400" }}>
-                    {series.episode_run_time[0] || series.next_episode_to_air.runtime} Min
-                  </span>
+                  {`${items.duration}: `}
+                  <span style={{ fontWeight: "400" }}>{`${
+                    series.episode_run_time[0] ||
+                    series.next_episode_to_air.runtime
+                  } Min`}</span>
                 </h5>
               </div>
               <div>
@@ -151,7 +158,7 @@ export const SeriesDetails = () => {
                     color: "#000000",
                   }}
                 >
-                  Languages:{" "}
+                  {`${items.realLanguage}: `}
                   <span style={{ fontWeight: "400" }}>
                     {series.spoken_languages?.[0]?.name || "N/A"}
                   </span>

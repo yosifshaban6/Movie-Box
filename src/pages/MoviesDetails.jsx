@@ -17,7 +17,6 @@ export const MoviesDetails = () => {
   const [movie, setMovie] = useState();
   const { id } = useParams();
   const dispatch = useDispatch();
-  const location = useLocation();
   const favorites = useSelector((state) => state.movieData.favorites);
   const watching = useSelector((state) => state.movieData.watching);
 
