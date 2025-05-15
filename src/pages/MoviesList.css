@@ -22,3 +22,13 @@ button.btn-warning {
   font-size: 1rem;
   padding: 8px 20px;
 }
+
+.pagination .page-item.active .page-link {
+  background-color: #ffe353;
+  color: #fff;
+  border-color: #ccc;
+}
+
+.pagination .page-item .page-link {
+  color: #d3bb45;
+}
