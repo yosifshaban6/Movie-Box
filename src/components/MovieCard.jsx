@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FaHeart } from "react-icons/fa";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RiHeart3Fill } from "react-icons/ri";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -28,6 +28,7 @@ export const MoviesCard = (props) => {
   const isFavorited = favorites.includes(movie.id);
   const isWatching = watching.includes(movie.id);
 
+  console.log(movie);
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
     dispatch(ToggleFavorite(movie.id));
@@ -141,17 +142,18 @@ export const MoviesCard = (props) => {
           }}
         >
           <CircularProgressbar
-            value={movie.popularity.toFixed()}
-            text={`${movie.popularity.toFixed()}%`}
+            value={movie.vote_average.toFixed()}
+            text={`${movie.vote_average.toFixed()}%`}
+            maxValue={10}
             background
             backgroundPadding={6}
             styles={buildStyles({
               backgroundColor: "#081c22",
               textColor: "#fff",
               pathColor:
-                movie.popularity.toFixed() > 100
+                movie.vote_average.toFixed() > 7 
                   ? "green"
-                  : movie.popularity.toFixed() > 50
+                  : movie.vote_average.toFixed() > 5
                   ? "yellow"
                   : "red",
               trailColor: "transparent",
