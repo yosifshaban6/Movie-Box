@@ -101,7 +101,7 @@ export const MoviesSearch = () => {
       )}
 
       {/* Movie Cards */}
-      <div className="row g-4 mt-3">
+      <div className="row g-4 m-4">
         {movies.length > 0 ? (
           movies.map((movie) => <MoviesCard movie={movie} key={movie.id} />)
         ) : (
