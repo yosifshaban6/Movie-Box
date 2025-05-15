@@ -84,6 +84,28 @@ export const MoviesList = () => {
     setPage(newPage);
     navigate(`/?page=${newPage}`);
   };
+
+  function getPaginationRange(page, totalPages) {
+    const delta = Math.min(5, page - 1);
+    let start = page - delta;
+    let end = Math.min(page + 5 - delta, totalPages);
+
+    if (end - start + 1 > 6) {
+      end = totalPages;
+      start = Math.max(1, end - 5);
+    }
+
+    if (start < 1) {
+      start = 1;
+      end = Math.min(6, totalPages);
+    }
+
+    return { start, end };
+  }
+
+  const [totalPages] = useState(100);
+  const { start, end } = getPaginationRange(page, totalPages);
+
   return (
     <div className="container py-3">
       {/* Welcome Section */}
@@ -142,23 +164,21 @@ export const MoviesList = () => {
             onClick={() => handlePageChange(Math.max(page - 1, 1))}
             disabled={page === 1}
           />
-          {range(Math.max(page), Math.min(20, page + 9)).map(
-            (pageNumber) => (
-              <Pagination.Item
-                key={pageNumber}
-                active={pageNumber === page}
-                onClick={() => handlePageChange(pageNumber)}
-              >
-                {pageNumber}
-              </Pagination.Item>
-            ),
-          )}
+          {range(start, end).map((pageNumber) => (
+            <Pagination.Item
+              key={pageNumber}
+              active={pageNumber === page}
+              onClick={() => handlePageChange(pageNumber)}
+            >
+              {pageNumber}
+            </Pagination.Item>
+          ))}
           <Pagination.Next
-            onClick={() => handlePageChange(Math.min(page + 1, 20))}
+            onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
             disabled={page === 20}
           />
           <Pagination.Last
-            onClick={() => handlePageChange(20)}
+            onClick={() => handlePageChange(totalPages)}
             disabled={page === 20}
           />
         </Pagination>
