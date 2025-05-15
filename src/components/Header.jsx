@@ -81,10 +81,16 @@ export const Header = () => {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item className="fw-semibold" id="en" eventKey="en-US">
-              EN
+              English
             </Dropdown.Item>
             <Dropdown.Item className="fw-semibold" id="ar" eventKey="ar-EG">
-              AR
+              العربية
+            </Dropdown.Item>
+            <Dropdown.Item className="fw-semibold" id="fr" eventKey="fr-FR">
+              Français
+            </Dropdown.Item>
+            <Dropdown.Item className="fw-semibold" id="zh" eventKey="zh-CN">
+              中文
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
