@@ -1,5 +1,8 @@
 # 🎬 Movie Box
 
+![Movie Box](https://github.com/user-attachments/assets/711b4226-d6f3-485d-853f-b08fccc718b4)
+
+
 **Movie Box** is a modern and responsive movie discovery web application built using **React** and **Vite**. It provides users with an engaging experience to explore trending movies, view detailed information, and search for any movie easily.
 
 - 🚀 **Live Demo:** [View Deployed App](https://movies-box-umber.vercel.app/)
